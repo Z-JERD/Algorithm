@@ -278,3 +278,105 @@
                 prev.next = l1 if l1 is not None else l2
         
                 return prehead.next
+                
+   ## 判断链表中是否有环
+
+        tot1：哈希表
+
+            每次遍历到一个节点时，判断该节点此前是否被访问过
+
+            1. 定义一张哈希表来存储所有已经访问过的节点。
+
+            2. 每到达一个节点，如果该节点已经存在于哈希表中，则说明该链表是环形链表，否则就将该节点加入哈希表中
+
+
+            code:
+                class Solution:
+
+                    def HasCycle(self, head: ListNode):
+
+                        seen = []
+
+                        # 入环点和环的长度
+
+                        pos, length = None, None
+
+                        while head:
+
+                            if head in seen:
+
+                                pos = seen.index(head)
+
+                                length = len(seen) - pos
+
+                                return True
+
+                            seen.append(head)
+
+                            head = head.next
+
+                        return False
+
+        tot2: 快慢指针
+
+            是否为环形：
+
+                1. 定义两个指针，一快一满。慢指针每次只移动一步, 而快指针每次移动两步
+
+                2. 初始时，慢指针在位置 head，而快指针在位置 head.next
+
+                3. 在移动的过程中，快指针反过来追上慢指针，就说明该链表为环形链表
+
+                4. 否则快指针将到达链表尾部，该链表不为环形链表
+
+            找出入环节点？
+
+                当slow与fast 相遇时，再额外使用一个指针 ptr, 它指向链表头部；
+                随后，它和slow 每次向后移动一个位置。最终，它们会在入环点相遇。
+
+            环的长度是多少？
+
+                从入口点遍历，到下次入口点遍历，得到长度
+
+
+            code：
+
+                    class Solution:
+
+                        def HasCycle(self, head: ListNode):
+
+                            if not head or not head.next:
+
+                                return False
+
+                            slow = head
+                            fast = head
+                            ptr = head
+
+                            while slow != fast:
+
+                                if not fast or not fast.next:
+
+                                    return False
+
+                                slow = slow.next
+                                fast = fast.next.next
+
+                            # ptr从头开始往后走，和slow相遇点就是入环点
+
+                            while ptr != slow:
+                                slow = slow.next
+                                ptr = ptr.next
+
+                            # 计算长度
+
+                            length = 1
+
+                            while ptr.next != slow:
+
+                                length += 1
+
+                                ptr = ptr.next
+
+                            return True
+
