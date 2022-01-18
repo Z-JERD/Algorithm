@@ -102,7 +102,7 @@
     
 ### 只遍历一次，获取倒数第N个节点的值
 
-    tot：双指针
+    plan：双指针
 
         1. 定义指针1和指针2，均指向头节点位置
         2. 指针1遍历链表，遍历到第N个节点时，指针2开始后移, 链表遍历结束，指针2所指位置即待取的数据
@@ -124,52 +124,52 @@
 
 ### 删除倒数第N个节点数据
 
-    tot1：单指针, 多次遍历
+    plan1：单指针, 多次遍历
 
         1. 对链表进行一次遍历，得到链表的长度 L， 第L-N+1个节点即要删除的节点
         2. 遍历到第L-N个节点时，修改其next指向为L-N+1节点的next指向
             cur.next = cur.next.next
 
-    tot2：双指针，单次遍历
+    plan2：双指针，单次遍历
 
-          1. 设置虚拟节点 dummyHead 指向 head (不需要对头节点进行特殊的判断)
-          2. 设定双指针 p 和 q，初始都指向虚拟节点 dummyHead
-          3. 指针p移动N个节点，指针q开始移动，直到指针p遍历结束
-          4. 此时指针q指向倒数第N-1个节点
-          5. 删除节点  cur.next = cur.next.next
+        1. 设置虚拟节点 dummyHead 指向 head (不需要对头节点进行特殊的判断)
+        2. 设定双指针 p 和 q，初始都指向虚拟节点 dummyHead
+        3. 指针p移动N个节点，指针q开始移动，直到指针p遍历结束
+        4. 此时指针q指向倒数第N-1个节点
+        5. 删除节点  cur.next = cur.next.next
 
-    code:
-
-        def remove_node(head: ListNode, n: int):
-
-            def get_length(head: ListNode):
-
-                length = 0
-
-                while head:
-
-                    length += 1
-
-                    head = head.next
-
-                return length
-
-            length = get_length(head)
-
-            cur = head
-
-            for i in range(1, length - n + 1):
-
-                cur = cur.next
-
-            cur.next = cur.next.next
-
-            return head
+        code:
+    
+            def remove_node(head: ListNode, n: int):
+    
+                def get_length(head: ListNode):
+    
+                    length = 0
+    
+                    while head:
+    
+                        length += 1
+    
+                        head = head.next
+    
+                    return length
+    
+                length = get_length(head)
+    
+                cur = head
+    
+                for i in range(1, length - n + 1):
+    
+                    cur = cur.next
+    
+                cur.next = cur.next.next
+    
+                return head
 
 ## 翻转链表
 ### 翻转单链表
 
-    tot1:
+    plan1:
     
         先对原链表做头部删操作，再对新链表做头部插入操作；
 
@@ -179,7 +179,7 @@
 
             3. 执行旧链表中头结点的下一个元素， 重复执行
 
-    tot2:
+    plan2:
 
         把每个节点的 next 指向它的前驱节点即可
 
@@ -187,26 +187,26 @@
 
         先找到 temp，然后 p.next 再指向 q，最后 q，p 同时右移
 
-    code:
-
-        def ReverseList(head: ListNode):
-
-            # 初始化记录当前节点 p 和前驱节点 q
-            p = head
-            q = None
-
-            while p:
-
-                temp = p.next
-                p.next = q
-                q = p
-                p = temp
-
-            return q
+        code:
+    
+            def ReverseList(head: ListNode):
+    
+                # 初始化记录当前节点 p 和前驱节点 q
+                p = head
+                q = None
+    
+                while p:
+    
+                    temp = p.next
+                    p.next = q
+                    q = p
+                    p = temp
+    
+                return q
 
 ### 反转从位置 left 到位置 right 的链表节点
 
-    tot:
+    plan:
     
         在需要反转的区间里，每遍历到一个节点，让这个新节点来到反转部分的起始位置
     
@@ -220,33 +220,33 @@
     
         4. 把 pre 的下一个节点指向 next
     
-    code:
-    
-        def ReverseBetween(head: ListNode, left: int, right: int):
-    
-            # 设置虚拟节点
-            dummy_node = ListNode(-1)
-            dummy_node.next = head
-    
-            pre = dummy_node
-    
-            for _ in range(left - 1):
-                pre = pre.next
-    
-            cur = pre.next
-    
-            for _ in range(right - left):
-    
-                next = cur.next
-                cur.next = next.next
-                next.next = pre.next
-                pre.next = next
-    
-            return dummy_node.next
+        code:
+        
+            def ReverseBetween(head: ListNode, left: int, right: int):
+        
+                # 设置虚拟节点
+                dummy_node = ListNode(-1)
+                dummy_node.next = head
+        
+                pre = dummy_node
+        
+                for _ in range(left - 1):
+                    pre = pre.next
+        
+                cur = pre.next
+        
+                for _ in range(right - left):
+        
+                    next = cur.next
+                    cur.next = next.next
+                    next.next = pre.next
+                    pre.next = next
+        
+                return dummy_node.next
             
 ##  将两个升序链表合并为一个新的升序链表并返回
 
-    tot:
+    plan:
         使用迭代的方法：
        
            1. 设立虚拟头节点prehead，prev节点初始指向prehead，
@@ -255,33 +255,33 @@
            
            3. 不断移动prev，最后返回prehead.next
        
-    code:   
-        class Solution:
-            
-            def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
+        code:   
+            class Solution:
                 
-                prehead = ListNode(-1)
-        
-                prev = prehead
-                
-                while l1 and l2:
-                    if l1.val <= l2.val:
-                        prev.next = l1
-                        l1 = l1.next
-                    else:
-                        prev.next = l2
-                        l2 = l2.next            
+                def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
                     
-                    prev = prev.next
-        
-                # 合并后 l1 和 l2 最多只有一个还未被合并完，我们直接将链表末尾指向未合并完的链表即可
-                prev.next = l1 if l1 is not None else l2
-        
-                return prehead.next
+                    prehead = ListNode(-1)
+            
+                    prev = prehead
+                    
+                    while l1 and l2:
+                        if l1.val <= l2.val:
+                            prev.next = l1
+                            l1 = l1.next
+                        else:
+                            prev.next = l2
+                            l2 = l2.next            
+                        
+                        prev = prev.next
+            
+                    # 合并后 l1 和 l2 最多只有一个还未被合并完，我们直接将链表末尾指向未合并完的链表即可
+                    prev.next = l1 if l1 is not None else l2
+            
+                    return prehead.next
                 
    ## 判断链表中是否有环
 
-        tot1：哈希表
+        plan1：哈希表
 
             每次遍历到一个节点时，判断该节点此前是否被访问过
 
@@ -317,7 +317,7 @@
 
                         return False
 
-        tot2: 快慢指针
+        plan2: 快慢指针
 
             是否为环形：
 
@@ -380,3 +380,105 @@
 
                             return True
 
+
+# 队列实现栈
+
+    plan1: 两个队列
+    
+        1. queue1用于存储栈内的元素，queue2作为入栈操作的辅助队列
+        
+        2. 入栈操作时，首先将元素入队到queue2​，然后将queue1的全部元素依次出队并入队到queue2
+        
+        3. queue1, queue2​ 进行互换
+        
+        code:
+            import collections
+        
+            class MyStack:
+        
+                def __init__(self):
+        
+                    self.queue1 = collections.deque()
+                    self.queue2 = collections.deque()
+        
+                def push(self, x):
+        
+                    self.queue2.append(x)
+        
+                    while self.queue1:
+        
+                        self.queue2.append(self.queue1.popleft())
+        
+                    self.queue1, self.queue2 = self.queue2, self.queue1
+        
+                def pop(self):
+        
+                    return self.queue1.popleft()
+    
+    plan2: 一个队列
+    
+        1. 入栈操作的时候，先获得队列中的元素个数n
+    
+        2. 往队列插入元素
+    
+        3. 将队列中的前n个元素出列并重新入列
+    
+    
+        code:
+    
+            import collections
+    
+            class MyStack:
+    
+                def __init__(self):
+    
+                    self.queue1 = collections.deque()
+    
+                def push(self, x):
+    
+                    length = len(self.queue1)
+    
+                    self.queue1.append(x)
+    
+                    for _ in range(length):
+    
+                        self.queue1.append(self.queue1.popleft())
+    
+                def pop(self):
+    
+                    return self.queue1.popleft()
+
+# 栈实现队列
+
+    plan：
+
+         1. 定义两个栈, 栈1保存插入的数据
+
+        2. 出队列时, 如果栈2不为空则直接pop；为空则把栈1中的数据全部pop放到栈2中。
+
+
+        code:
+
+
+            class MyQueue(object):
+
+                def __init__(self):
+
+                    self.stack1 = []
+                    self.stack2 = []
+
+                def put(self, x):
+
+                    self.stack1.append(x)
+
+                    return
+
+                def get(self):
+
+                    if not self.stack2:
+
+                        while self.stack1:
+
+                            self.stack2.append(self.stack1.pop())
+
+                    return self.stack2.pop()
